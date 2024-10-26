@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display RGB Matrix</title>
+    <style>
+        canvas {
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="canvas" width="512" height="512"></canvas>
+<canvas id="canvas_transformed" width="512" height="512"></canvas>
+<script src="kernel.js"></script>
+<script src="imgs_array.js"></script>
+
+<script>
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const canvas_transformed = document.getElementById('canvas_transformed');
+    const ctx_transformed = canvas_transformed.getContext('2d');
+
+    const selected = giyilo_mawi_512x512;
+
+    // Draw each pixel on the canvas
+    for (let y = 0; y < selected.length; y++) {
+        for (let x = 0; x < selected[y].length; x++) {
+            const [r, g, b] = selected[y][x];
+            ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+            ctx.fillRect(x, y, 1, 1); 
+        }
+    }
+
+    const result = apply_gaussian_filter(giyilo_mawi_512x512, schaerfung);
+
+    for (let y = 0; y < result.length; y++) {
+            for (let x = 0; x < result[y].length; x++) {
+                const [r, g, b] = result[y][x];
+                ctx_transformed.fillStyle = `rgb(${r}, ${g}, ${b})`;
+                ctx_transformed.fillRect(x, y, 1, 1);
+            }
+        }
+    
+
+    // Scale the canvas for better visibility
+    canvas.style.width = '400px';
+    canvas.style.height = '400px';
+    canvas_transformed.style.width = '400px';
+    canvas_transformed.style.height = '400px';
+</script>
+
+</body>
+</html>
+
